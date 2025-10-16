@@ -1,211 +1,158 @@
-# HortiFlow Frontend - Interface Web
+# HortiFlow - Sistema de Gestão Hortifruti
 
-## 📋 Descrição
+Sistema de gestão para hortifruti desenvolvido com React e Vite.
 
-Frontend moderno para o sistema HortiFlow, desenvolvido com HTML5, CSS3 e JavaScript vanilla. Consome a API REST do backend Java.
+## 🚀 Funcionalidades
 
-## 🎨 Características
-
-- **Interface Moderna**: Design responsivo e intuitivo
-- **Dashboard Interativo**: Estatísticas em tempo real
-- **CRUD Completo**: Gerenciamento de produtos e clientes
-- **Controle de Estoque**: Movimentações de entrada e saída
-- **Notificações**: Sistema de toast para feedback
-- **Status da API**: Indicador de conexão com o backend
-- **Modo Demonstração**: Funciona sem backend usando dados mockados
+- **Dashboard**: Visão geral com estatísticas e produtos com baixo estoque
+- **Produtos**: CRUD completo de produtos com controle de estoque
+- **Clientes**: Gerenciamento de clientes com validação de CPF/CNPJ
+- **Vendas**: Sistema de vendas (nova funcionalidade)
+- **Autenticação**: Sistema de login com modo demonstração
+- **Modo Offline**: Funciona com dados mockados quando backend não está disponível
 
 ## 🛠️ Tecnologias
 
-- **HTML5** - Estrutura semântica
-- **CSS3** - Estilos modernos com Flexbox e Grid
-- **JavaScript ES6+** - Lógica da aplicação
+- **React 18** - Biblioteca para interface de usuário
+- **Vite** - Build tool e dev server
+- **Vanilla JavaScript** - Para handlers e lógica de negócio
+- **CSS3** - Estilização moderna e responsiva
 - **Font Awesome** - Ícones
-- **Google Fonts** - Tipografia (Inter)
+
+## 📁 Estrutura do Projeto
+
+```
+frontend/
+├── login.html              # Página de login
+├── index.html              # Dashboard principal (React)
+├── styles.css              # Estilos globais
+├── package.json            # Dependências
+├── vite.config.js          # Configuração Vite
+│
+├── src/
+│   ├── main.jsx            # Ponto de entrada React
+│   ├── App.jsx             # Componente principal
+│   ├── index.css           # Estilos React
+│   ├── api.js              # Comunicação com backend
+│   ├── auth.js             # Gerenciamento de autenticação
+│   ├── ui.js               # Utilitários de UI
+│   ├── utils.js            # Funções utilitárias
+│   │
+│   └── handlers/           # Lógica específica de cada aba
+│       ├── dashboardHandler.js
+│       ├── produtoHandler.js
+│       ├── clienteHandler.js
+│       └── vendaHandler.js
+```
 
 ## 🚀 Como Executar
 
-### Modo Demonstração (Recomendado para Testes)
-O sistema funciona **mesmo sem o backend**, usando dados mockados para demonstração.
+### Pré-requisitos
+- Node.js 16+ 
+- npm ou yarn
 
-### Modo Completo (Com Backend)
-- Backend Java rodando em `http://localhost:8080`
-- Navegador moderno (Chrome, Firefox, Safari, Edge)
+### Instalação
 
-### Opção 1: Servidor Python
+1. **Instalar dependências:**
 ```bash
-cd frontend
-python -m http.server 3000
+npm install
 ```
 
-### Opção 2: Script Batch (Windows)
+2. **Executar em modo desenvolvimento:**
 ```bash
-cd frontend
-start-frontend.bat
+npm run dev
 ```
 
-### Opção 3: Servidor Node.js
+3. **Acessar a aplicação:**
+- Login: http://localhost:3000/login.html
+- Dashboard: http://localhost:3000
+
+### Build para Produção
+
 ```bash
-cd frontend
-npx http-server -p 3000
+npm run build
 ```
 
-### Opção 4: Live Server (VS Code)
-1. Instale a extensão "Live Server"
-2. Clique com botão direito no `index.html`
-3. Selecione "Open with Live Server"
+## 🔐 Autenticação
 
-## 📱 Funcionalidades
+### Modo Demonstração
+- Use qualquer e-mail e senha para acessar
+- Dados mockados são carregados automaticamente
+
+### Modo Produção
+- Configure o backend na URL: `http://localhost:8080/api`
+- Sistema detecta automaticamente se backend está disponível
+
+## 📊 Funcionalidades por Aba
 
 ### Dashboard
-- **Estatísticas Gerais**: Total de produtos, estoque atual, valor em estoque
-- **Produtos com Baixo Estoque**: Lista de produtos que precisam de reposição
-- **Últimos Produtos**: Produtos cadastrados recentemente
+- Estatísticas gerais (total produtos, estoque, valor)
+- Lista de produtos com baixo estoque
+- Últimos produtos cadastrados
 
-### Gerenciamento de Produtos
-- ✅ Listar todos os produtos
-- ✅ Criar novo produto
-- ✅ Editar produto existente
-- ✅ Excluir produto
-- ✅ Buscar produtos
-- ✅ Visualizar estoque atual
-- ✅ Calcular valor em estoque
+### Produtos
+- Listar, criar, editar e excluir produtos
+- Busca em tempo real
+- Validação de preços e estoque
+- Cálculo automático do valor em estoque
 
-### Gerenciamento de Clientes
-- ✅ Listar todos os clientes
-- ✅ Criar novo cliente
-- ✅ Editar cliente existente
-- ✅ Excluir cliente
-- ✅ Buscar clientes
-- ✅ Dados completos (CNPJ, IE, etc.)
+### Clientes
+- CRUD completo de clientes
+- Validação de CPF e CNPJ
+- Campos: nome, estado, telefone, documentos, condições de pagamento
 
-### Controle de Estoque
-- ✅ Movimentações de entrada
-- ✅ Movimentações de saída
-- ✅ Histórico de movimentações
-- ✅ Filtros por produto e tipo
-- ✅ Validação de estoque
+### Vendas (Nova)
+- Sistema de vendas com produtos e clientes
+- Cálculo automático de totais
+- Controle de status (pendente/concluída)
+- Integração com produtos e clientes existentes
 
-## 🎭 Modo Demonstração
+## 🔧 Configuração
 
-Quando o backend não está disponível, o sistema automaticamente:
-- ✅ Usa dados mockados para demonstração
-- ✅ Exibe "Modo Demonstração" no status da API
-- ✅ Mostra notificação informando o modo atual
-- ✅ Permite testar todas as funcionalidades
-
-### Dados de Demonstração Incluídos:
-- **5 Produtos**: Tomate Cereja, Alface Crespa, Cenoura, Brócolis, Couve
-- **3 Clientes**: Mercado Central, Supermercado Verde, Hortifruti São Paulo
-- **Movimentações**: Histórico de entradas e saídas
-- **Estatísticas**: Valores calculados automaticamente
-
-## 🔧 Configuração da API
-
-O frontend está configurado para consumir a API Java em:
+### API Backend
+Edite a URL da API em `src/api.js`:
 ```javascript
 const API_BASE_URL = 'http://localhost:8080/api';
 ```
 
-### Endpoints Utilizados
+### Dados Mockados
+Os dados de demonstração estão em `src/api.js` na constante `mockData`.
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/produtos` | Lista todos os produtos |
-| GET | `/produtos/{id}` | Busca produto por ID |
-| GET | `/produtos/estoque-baixo` | Produtos com estoque baixo |
-| GET | `/produtos/estatisticas` | Estatísticas gerais |
-| POST | `/produtos` | Cria novo produto |
-| PUT | `/produtos/{id}` | Atualiza produto |
-| DELETE | `/produtos/{id}` | Remove produto |
-| POST | `/produtos/{id}/movimentacao` | Adiciona movimentação |
-| GET | `/clientes` | Lista todos os clientes |
-| POST | `/clientes` | Cria novo cliente |
-| PUT | `/clientes/{id}` | Atualiza cliente |
-| DELETE | `/clientes/{id}` | Remove cliente |
+## 🎨 Design
 
-## 🎨 Interface
+- **Design System**: Cores verdes (#059669) para tema hortifruti
+- **Responsivo**: Funciona em desktop, tablet e mobile
+- **Acessível**: Contraste adequado e navegação por teclado
+- **Moderno**: Gradientes, sombras e animações suaves
 
-### Cores Principais
-- **Verde**: #059669 (Primary)
-- **Azul**: #3b82f6 (Info)
-- **Laranja**: #f59e0b (Warning)
-- **Vermelho**: #ef4444 (Error)
+## 🚀 Migração do Sistema Anterior
 
-### Componentes
-- **Sidebar**: Navegação principal
-- **Cards**: Estatísticas e informações
-- **Tabelas**: Dados organizados
-- **Modais**: Formulários de cadastro
-- **Toasts**: Notificações
+Esta versão React mantém 100% da funcionalidade do sistema vanilla JavaScript anterior:
 
-## 📱 Responsividade
+- ✅ Todas as funcionalidades preservadas
+- ✅ Mesmo design e UX
+- ✅ Compatibilidade com backend existente
+- ✅ Dados mockados idênticos
+- ✅ Sistema de notificações
+- ✅ Modais e formulários
 
-A interface é totalmente responsiva e funciona em:
-- ✅ Desktop (1200px+)
-- ✅ Tablet (768px - 1199px)
-- ✅ Mobile (320px - 767px)
+### Melhorias Adicionadas
 
-## 🔍 Recursos Avançados
+- 🎯 **Organização**: Código separado em handlers específicos
+- 🔄 **Reatividade**: Interface atualiza automaticamente
+- 🛡️ **Autenticação**: Sistema de login separado
+- 📱 **Responsividade**: Melhor experiência mobile
+- 🚀 **Performance**: React otimiza re-renderizações
+- 🔧 **Manutenibilidade**: Código mais fácil de manter e expandir
 
-### Sistema de Notificações
-- Toast notifications para feedback
-- Indicador de status da API
-- Loading states durante operações
+## 📝 Próximos Passos
 
-### Validação
-- Validação de formulários
-- Verificação de estoque antes de saídas
-- Tratamento de erros da API
-
-### Performance
-- Lazy loading de dados
-- Debounce na busca
-- Cache de dados em memória
-
-## 🐛 Solução de Problemas
-
-### Backend não conecta
-1. Verifique se o backend Java está rodando
-2. Confirme a porta 8080 está livre
-3. Teste a URL: `http://localhost:8080/api/produtos/health`
-
-### CORS Errors
-- O backend deve ter CORS habilitado
-- Verifique as configurações no `application.properties`
-
-### Dados não carregam
-1. Abra o DevTools (F12)
-2. Verifique a aba Network
-3. Confirme as requisições estão sendo feitas
-4. Verifique os logs do backend
-
-## 📊 Monitoramento
-
-### Console do Navegador
-- Logs de debug da aplicação
-- Erros de JavaScript
-- Requisições da API
-
-### Network Tab
-- Status das requisições HTTP
-- Tempo de resposta
-- Payload das requisições
-
-## 🔄 Atualizações
-
-Para atualizar o frontend:
-1. Modifique os arquivos HTML/CSS/JS
-2. Recarregue a página no navegador
-3. Para mudanças na API, reinicie o backend
-
-## 📝 Próximas Funcionalidades
-
-- [ ] Gráficos de estoque
-- [ ] Relatórios em PDF
-- [ ] Exportação de dados
-- [ ] Sistema de usuários
-- [ ] Backup automático
-- [ ] Notificações push
+1. **Implementar API de Vendas** no backend
+2. **Adicionar relatórios** e gráficos
+3. **Sistema de notificações** push
+4. **Exportação de dados** (PDF, Excel)
+5. **PWA** para uso offline
+6. **Testes automatizados**
 
 ## 🤝 Contribuição
 
@@ -218,11 +165,3 @@ Para atualizar o frontend:
 ## 📄 Licença
 
 Este projeto está sob a licença MIT.
-
-## 👥 Autores
-
-- **Hortifruti Team** - Desenvolvimento inicial
-
-## 📞 Suporte
-
-Para dúvidas ou suporte, entre em contato através dos issues do repositório. 

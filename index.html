@@ -9,218 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-                    <div class="sidebar-header">
-            <h2><i class="fas fa-leaf"></i> HortiFlow</h2>
-            <p>Sistema de Gestão</p>
-        </div>
-            <ul class="nav-menu">
-                <li class="nav-item active" data-tab="dashboard">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </li>
-                <li class="nav-item" data-tab="produtos">
-                    <i class="fas fa-box"></i>
-                    <span>Produtos</span>
-                </li>
-                <li class="nav-item" data-tab="clientes">
-                    <i class="fas fa-users"></i>
-                    <span>Clientes</span>
-                </li>
-                <li class="nav-item" data-tab="estoque">
-                    <i class="fas fa-warehouse"></i>
-                    <span>Estoque</span>
-                </li>
-            </ul>
-            <div class="sidebar-footer">
-                <div class="api-status" id="api-status">
-                    <i class="fas fa-circle"></i>
-                    <span>Conectando...</span>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <h1 id="page-title">Dashboard</h1>
-                <div class="header-actions">
-                    <button class="btn btn-primary" id="refresh-btn">
-                        <i class="fas fa-sync-alt"></i> Atualizar
-                    </button>
-                </div>
-            </header>
-
-            <!-- Dashboard Tab -->
-            <div class="tab-content active" id="dashboard">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-box"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="total-produtos">-</h3>
-                            <p>Total de Produtos</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-warehouse"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="estoque-atual">-</h3>
-                            <p>Estoque Atual</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="valor-estoque">R$ 0,00</h3>
-                            <p>Valor em Estoque</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="produtos-baixo-estoque">-</h3>
-                            <p>Baixo Estoque</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-grid">
-                    <div class="card">
-                        <h3>Produtos com Baixo Estoque</h3>
-                        <div id="baixo-estoque-list" class="list-container">
-                            <p class="empty-state">Carregando...</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Últimos Produtos</h3>
-                        <div id="ultimos-produtos" class="list-container">
-                            <p class="empty-state">Carregando...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Produtos Tab -->
-            <div class="tab-content" id="produtos">
-                <div class="tab-header">
-                    <h2>Gerenciar Produtos</h2>
-                    <button class="btn btn-primary" id="add-produto-btn">
-                        <i class="fas fa-plus"></i> Novo Produto
-                    </button>
-                </div>
-
-                <div class="search-bar">
-                    <input type="text" id="produto-search" placeholder="Buscar produtos...">
-                    <i class="fas fa-search"></i>
-                </div>
-
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Preço</th>
-                                <th>Embalagem</th>
-                                <th>Estoque Atual</th>
-                                <th>Valor Estoque</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="produtos-table-body">
-                            <tr>
-                                <td colspan="6" class="loading">Carregando produtos...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Clientes Tab -->
-            <div class="tab-content" id="clientes">
-                <div class="tab-header">
-                    <h2>Gerenciar Clientes</h2>
-                    <button class="btn btn-primary" id="add-cliente-btn">
-                        <i class="fas fa-plus"></i> Novo Cliente
-                    </button>
-                </div>
-
-                <div class="search-bar">
-                    <input type="text" id="cliente-search" placeholder="Buscar clientes...">
-                    <i class="fas fa-search"></i>
-                </div>
-
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Estado</th>
-                                <th>Telefone</th>
-                                <th>CNPJ</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="clientes-table-body">
-                            <tr>
-                                <td colspan="5" class="loading">Carregando clientes...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Estoque Tab -->
-            <div class="tab-content" id="estoque">
-                <div class="tab-header">
-                    <h2>Controle de Estoque</h2>
-                    <button class="btn btn-primary" id="add-movimentacao-btn">
-                        <i class="fas fa-plus"></i> Nova Movimentação
-                    </button>
-                </div>
-
-                <div class="estoque-filters">
-                    <select id="produto-filter">
-                        <option value="">Todos os produtos</option>
-                    </select>
-                    <select id="tipo-filter">
-                        <option value="">Todos os tipos</option>
-                        <option value="ENTRADA">Entrada</option>
-                        <option value="SAIDA">Saída</option>
-                    </select>
-                </div>
-
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Produto</th>
-                                <th>Tipo</th>
-                                <th>Quantidade</th>
-                                <th>Data</th>
-                                <th>Estoque Atual</th>
-                            </tr>
-                        </thead>
-                        <tbody id="estoque-table-body">
-                            <tr>
-                                <td colspan="5" class="loading">Carregando movimentações...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-    </div>
+    <div id="root"></div>
 
     <!-- Modals -->
     
@@ -286,6 +75,10 @@
                     <div class="form-group">
                         <label for="cliente-cnpj">CNPJ</label>
                         <input type="text" id="cliente-cnpj" name="cliente-cnpj">
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente-cpf">CPF</label>
+                        <input type="text" id="cliente-cpf" name="cliente-cpf">
                     </div>
                     <div class="form-group">
                         <label for="cliente-ie">IE</label>
@@ -355,6 +148,6 @@
     <!-- Toast Notifications -->
     <div class="toast-container" id="toast-container"></div>
 
-    <script src="app.js"></script>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
-</html> 
+</html>

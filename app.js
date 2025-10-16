@@ -275,22 +275,20 @@ async function apiRequest(endpoint, options = {}) {
     try {
         const response = await fetch(url, config);
         
+        if (response.status === 404) {
+             throw new Error("Recurso não encontrado.");
+        }
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
         }
-        // Tratar respostas sem corpo (ex.: 204 No Content)
-        if (response.status === 204) {
-            return null;
+        
+        if (response.status === 204 || response.headers.get('content-length') === '0') {
+            return null; // DELETE ou PUT sem retorno
         }
-        const contentType = response.headers.get('content-type') || '';
-        if (contentType.includes('application/json')) {
-            return await response.json();
-        }
-        // Se não for JSON, retorna texto ou nulo
-        const text = await response.text();
-        return text || null;
+        return await response.json();
     } catch (error) {
-        console.error(`Erro na requisição ${endpoint}:`, error);
+        console.error(`Erro na requisição [${options.method || 'GET'}] ${endpoint}:`, error);
         throw error;
     }
 }
@@ -341,6 +339,38 @@ function showClienteModal(cliente = null) {
     }
     
     modal.classList.add('active');
+}
+
+// Funções de validação
+function validarCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g, '');
+    if (cpf === '' || cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
+        return false;
+    }
+    let soma = 0;
+    let resto;
+    for (let i = 1; i <= 9; i++) {
+        soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    }
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) {
+        resto = 0;
+    }
+    if (resto !== parseInt(cpf.substring(9, 10))) {
+        return false;
+    }
+    soma = 0;
+    for (let i = 1; i <= 10; i++) {
+        soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    }
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) {
+        resto = 0;
+    }
+    if (resto !== parseInt(cpf.substring(10, 11))) {
+        return false;
+    }
+    return true;
 }
 
 // Form Handlers
@@ -418,11 +448,17 @@ async function handleClienteSubmit(e) {
         showToast('Informe o nome do cliente.', 'error');
         return;
     }
+    const cpf = (formData.get('cliente-cpf') || '').trim();
+    if (cpf && !validarCPF(cpf)) {
+        showToast('CPF inválido.', 'error');
+        return;
+    }
     const cliente = {
         nome: nome,
         estado: (formData.get('cliente-estado') || '').trim(),
         telefone: (formData.get('cliente-telefone') || '').trim(),
         cnpj: (formData.get('cliente-cnpj') || '').trim(),
+        cpf: cpf,
         ie: (formData.get('cliente-ie') || '').trim(),
         condPgto: (formData.get('cliente-cond-pgto') || '').trim(),
         banco: (formData.get('cliente-banco') || '').trim()
@@ -470,7 +506,7 @@ async function handleMovimentacaoSubmit(e) {
     try {
         showLoading(true);
 
-        await apiRequest(`/produtos/${produtoId}/movimentacao`, {
+        await apiRequest(`/api/produtos/${produtoId}/movimentacao`, {
             method: 'POST',
             body: JSON.stringify(movimentacao)
         });
@@ -585,11 +621,11 @@ async function loadDashboardData() {
         
         if (isBackendConnected) {
             // Carregar estatísticas
-            stats = await apiRequest('/dashboard/estatisticas');
+            stats = await apiRequest('/api/produtos/estatisticas');
             // Carregar produtos com baixo estoque
-            baixoEstoque = await apiRequest('/produtos/baixo-estoque');
+            baixoEstoque = await apiRequest('/api/produtos/baixo-estoque');
             // Carregar últimos produtos
-            ultimosProdutos = await apiRequest('/produtos?limit=5');
+            ultimosProdutos = await apiRequest('/api/produtos?limit=5');
         } else {
             // Usar dados mockados imediatamente
             console.log('📊 Carregando dados mockados...');
@@ -832,5 +868,4 @@ async function filterEstoque() {
     } catch (error) {
         console.error('Erro ao filtrar movimentações:', error);
         showToast('Erro ao filtrar movimentações', 'error');
-    }
-} 
+    }}
